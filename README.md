@@ -170,8 +170,6 @@ Clone the repository:
 git clone [repository-url]
 cd [repository-directory]
 
-pip install pandas numpy re paddleocr fitz Pillow torch
-
-pip install paddlepaddle paddleocr
-
-
+conda create -n tariffdocs -c conda-forge -y python
+pip install pandas numpy paddleocr paddlepaddle Pillow torch PyMuPDF
+```
