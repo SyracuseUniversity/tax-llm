@@ -28,7 +28,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install flake8 pytest pytest-cov
+        pip install flake8 pytest pytest-cov 
+        pip install paddlepaddle paddleocr PyMuPDF
+
+        
+        
 
     - name: Lint with flake8
       run: |
@@ -37,11 +41,10 @@ jobs:
 
     - name: Run unit tests with coverage
       run: |
-        pytest -q \
+        pytest tax-llm-work/inputfiletest/ \
           --maxfail=1 \
           --disable-warnings \
-          --cov=. --cov-report=xml --cov-report=term-missing \
-          test_01_ocr.py test_enhance.py test_commodity.py test_heirarchical.py test_rateofduty.py test_tariffpara.py test-pipeline.py
+          --cov=. --cov-report=xml --cov-report=term-missing
       continue-on-error: false
 
     - name: Upload coverage.xml

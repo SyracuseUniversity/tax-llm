@@ -3,6 +3,7 @@ import pandas as pd
 from io import StringIO
 import tempfile
 import os
+import re
 
 import rate_of_duty05 as rd
 
@@ -57,7 +58,7 @@ def extract_rates_from_text(text):
             text_str = text_str.replace(artifact, correction)
     
     # After correction, try to match known rate patterns
-    for pattern in rate_patterns:
+    for pattern in rd.rate_patterns:
         match = re.search(pattern, text_str, re.IGNORECASE)
         if match:
             return match.group(0)
