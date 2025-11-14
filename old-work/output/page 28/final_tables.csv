@@ -1,0 +1,38 @@
+Confidence,TopLeft_X,TopLeft_Y,TopRight_X,TopRight_Y,BottomRight_X,BottomRight_Y,BottomLeft_X,BottomLeft_Y,Page,Commodity Number,Tariff Paragraph,Hierarchical Description
+0.9499754905700684,515,706,1289,706,1289,746,515,746,28,0015 000,10600.0,Cattle: Weighing less than 200 pounds each (calves). (2)
+0.0989868491888046,789,765,796,765,796,772,789,772,28,,10700.0,Cattle: 试
+0.9403600692749025,515,798,1292,798,1292,839,515,839,28,,10700.0,Cattle: Weighing 200 pounds and less than 700 (2) pounds each.
+0.964735209941864,548,897,950,904,950,938,548,931,28,,10900.0,Cattle: Weighing 700 pounds or more each: Cows for dairy purposes-. (2）
+0.8681835532188416,550,956,823,960,822,998,550,994,28,,10900.0,"Cattle: Weighing 700 pounds or more each: Cattle, n.B. p.f_. (2）"
+0.94818115234375,479,1050,769,1054,769,1089,479,1085,28,,12200.0,Sheep and lambs..
+0.9140681624412536,479,1083,605,1088,604,1119,478,1114,28,,12200.0,Goats.-
+0.8656641244888306,477,1110,588,1120,585,1156,474,1147,28,,13000.0,Hogs-
+0.8471397161483765,512,1175,683,1179,682,1217,511,1213,28,,14000.0,"Poultry, live: Turkeys--. （2）"
+0.956952691078186,516,1238,1169,1240,1169,1278,516,1277,28,,18000.0,"Poultry, live: Chickens, ducks, geese, and guineas----- (2）"
+0.957849621772766,515,1299,948,1304,948,1341,515,1337,28,0015 000,18000.0,"Poultry, live: Baby chicks of poultry----. （2）"
+0.968546748161316,715,1366,1039,1366,1039,1396,715,1396,28,0015 500,18000.0,"Poultry, live: MEAT PRODUCTS"
+0.8232668042182922,514,1459,621,1459,621,1490,514,1490,28,0015 500,18000.0,"Poultry, live: Fresh, chilled, or frozen: Beef_- （4）"
+0.9137725234031676,516,1519,614,1519,614,1551,516,1551,28,0015 500,19000.0,"Poultry, live: Fresh, chilled, or frozen: Veal.. (4)"
+0.9454850554466248,548,1612,810,1612,810,1646,548,1646,28,0015 500,20100.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Fresh or chilled."
+0.8478944301605225,550,1643,699,1648,697,1679,548,1674,28,0015 500,18000.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Frozen--."
+0.8845488429069519,517,1673,700,1681,698,1714,516,1705,28,0015 500,18000.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Mutton---."
+0.8313016891479492,515,1704,646,1711,644,1743,513,1736,28,0015 500,23.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Lamb-."
+0.9250746369361876,516,1736,732,1743,731,1774,515,1767,28,0015 500,23.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Goat meat.--"
+0.8935457468032837,515,1769,784,1773,784,1803,515,1799,28,0015 500,23200.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Reindeer meat--. (4)"
+0.9104627966880798,517,1799,697,1808,695,1839,516,1830,28,0015 500,1558.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Venison---. (4)"
+0.956648886203766,516,1859,1192,1861,1192,1899,516,1897,28,0023 500,1558.0,"Poultry, live: Fresh, chilled, or frozen: Pork: Game (except birds), n. s. p. f. (specify by （4）"
+0.995866358280182,549,1896,663,1896,663,1927,549,1927,28,0023 500,1558.0,"Poultry, live: Fresh, chilled, or frozen: Pork: name)."
+0.9283435344696044,513,1915,1433,1921,1433,1965,513,1959,28,0023 500,1558.0,"Poultry, live: Fresh, chilled, or frozen: Edible offal: Livers, kidneys, tongues, hearts, (4)Lb.--- seetbreads, tripe, and brains."
+0.9244117736816406,518,2045,967,2048,967,2085,518,2082,28,0023 600,1558.0,"Poultry, live: Fresh, chilled, or frozen: Frog legs (C.D. 610-4/6/42)"
+0.7026658058166504,1226,2053,1289,2039,1299,2084,1236,2098,28,0023 800d1,1558.0,"Poultry, live: Fresh, chilled, or frozen: (4)"
+0.8687573671340942,518,2080,830,2084,830,2118,518,2114,28,0023 800d1,1558.0,"Poultry, live: Fresh, chilled, or frozen: Meats, n. s. p. f----"
+0.9309613108634948,587,2204,752,2210,751,2241,586,2235,28,0024 000,1558.0,"Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Turkeys-- （4)"
+0.991545021533966,589,2234,927,2238,926,2272,589,2268,28,0025 400,1558.0,"Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Chickens and guineas (4)"
+0.9391830563545228,590,2297,892,2301,891,2335,590,2331,28,0025 500,1558.0,"Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Ducks andgeese--. (4)"
+0.9218023419380188,589,2359,1326,2359,1326,2399,589,2399,28,0025 900,29000.0,"Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Birds, n, s. p. f. (including game birds)−- (4)]"
+0.9335785508155824,514,2451,1326,2453,1326,2493,514,2491,28,0025 900,29000.0,"Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Turkeys, prepared or_preserved, n. 8. p. f. (4)1 (forinerly part of 0026 000)."
+0.9549469351768494,516,2514,1302,2514,1302,2558,516,2558,28,0026 500i5,29000.0,"Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Birds, including poultry, prepared or pre- (4) served, n. e. s. (formerly part of 0026 000)."
+0.9349480867385864,518,2577,1107,2581,1106,2618,518,2614,28,0028 000,29000.0,"Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Canned beef, including corned beef--. （4）"
+0.945061981678009,518,2637,1062,2642,1062,2680,518,2675,28,0028 000,29000.0,"Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Beef and veal, pickled or cured ""..- (4)"
+0.9278185963630676,271,2712,1241,2717,1241,2751,271,2746,28,0028 000,29000.0,"For explanation of supertor notations against commodity numbers and GATT rates,"
+0.926065981388092,249,2741,455,2743,455,2771,249,2769,28,0028 000,29000.0,refer to Foreword. 1 Contingent upon proviso specifed In T. D. 51802.
