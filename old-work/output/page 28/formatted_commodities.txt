@@ -1,0 +1,37 @@
+Cattle: Weighing less than 200 pounds each (calves). (2)
+Cattle: [CHAR]
+Cattle: Weighing 200 pounds and less than 700 (2) pounds each.
+Cattle: Weighing 700 pounds or more each: Cows for dairy purposes-. (2）
+Cattle: Weighing 700 pounds or more each: Cattle, n.B. p.f_. (2）
+Sheep and lambs..
+Goats.-
+Hogs-
+Poultry, live: Turkeys--. （2）
+Poultry, live: Chickens, ducks, geese, and guineas----- (2）
+Poultry, live: Baby chicks of poultry----. （2）
+Poultry, live: MEAT PRODUCTS
+Poultry, live: Fresh, chilled, or frozen: Beef_- （4）
+Poultry, live: Fresh, chilled, or frozen: Veal.. (4)
+Poultry, live: Fresh, chilled, or frozen: Pork: Fresh or chilled.
+Poultry, live: Fresh, chilled, or frozen: Pork: Frozen--.
+Poultry, live: Fresh, chilled, or frozen: Pork: Mutton---.
+Poultry, live: Fresh, chilled, or frozen: Pork: Lamb-.
+Poultry, live: Fresh, chilled, or frozen: Pork: Goat meat.--
+Poultry, live: Fresh, chilled, or frozen: Pork: Reindeer meat--. (4)
+Poultry, live: Fresh, chilled, or frozen: Pork: Venison---. (4)
+Poultry, live: Fresh, chilled, or frozen: Pork: Game (except birds), n. s. p. f. (specify by （4）
+Poultry, live: Fresh, chilled, or frozen: Pork: name).
+Poultry, live: Fresh, chilled, or frozen: Edible offal: Livers, kidneys, tongues, hearts, (4)Lb.--- seetbreads, tripe, and brains.
+Poultry, live: Fresh, chilled, or frozen: Frog legs (C.D. 610-4/6/42)
+Poultry, live: Fresh, chilled, or frozen: (4)
+Poultry, live: Fresh, chilled, or frozen: Meats, n. s. p. f----
+Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Turkeys-- （4)
+Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Chickens and guineas (4)
+Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Ducks andgeese--. (4)
+Poultry, live: Fresh, chilled, or frozen: Birds, including poultry: Dead, dressed or undressed: Birds, n, s. p. f. (including game birds)−- (4)]
+Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Turkeys, prepared or_preserved, n. 8. p. f. (4)1 (forinerly part of 0026 000).
+Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Birds, including poultry, prepared or pre- (4) served, n. e. s. (formerly part of 0026 000).
+Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Canned beef, including corned beef--. （4）
+Poultry, live: Fresh, chilled, or frozen: Prepared or preserved: Beef and veal, pickled or cured "..- (4)
+For explanation of supertor notations against commodity numbers and GATT rates,
+refer to Foreword. 1 Contingent upon proviso specifed In T. D. 51802.
