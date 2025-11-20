@@ -5,7 +5,7 @@ from typing import List, Dict, Any
 # =======================================
 # CONFIGURATION
 # =======================================
-INPUT_CSV = r"new-work/output/cleaned_classified_words.csv"
+INPUT_CSV = r"new-work/output/page_29/cleaned_classified_words.csv"
 OUTPUT_CSV = r"new-work/output/cleaned_flattened_table.csv"
 
 # =======================================
