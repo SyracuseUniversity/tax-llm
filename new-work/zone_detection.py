@@ -36,24 +36,25 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def detect_table_cells_rtdetr(image_path: str, page_num: int) -> Tuple[List[Dict], Dict]:
     """
     Detect table cells using RT-DETR-L model.
+    Returns a list of cell dicts and a column range dictionary.
+    Falls back to grid-based detection if not enough cells are found.
     """
     logging.info(f"Attempting RT-DETR-L cell detection from: {image_path}")
     
     try:
         from paddleocr import TableCellsDetection
         
+        # Initialize the RT-DETR-L model
         model = TableCellsDetection(model_name="RT-DETR-L_wired_table_cell_det")
         output = model.predict(image_path, threshold=0.3, batch_size=1)
         
         cells = []
         
         for res in output:
-            # Save JSON output
+            # Save JSON output and visualization
             json_path = output_cells_json.format(page=page_num)
             os.makedirs(os.path.dirname(json_path), exist_ok=True)
             res.save_to_json(json_path)
-            
-            # Save visualization
             img_out_path = output_cells_image.format(page=page_num)
             res.save_to_img(os.path.dirname(img_out_path))
             logging.info(f"Saved cell visualization to: {img_out_path}")
@@ -97,6 +98,7 @@ def detect_table_cells_rtdetr(image_path: str, page_num: int) -> Tuple[List[Dict
         
         logging.info(f"✅ RT-DETR-L detected {len(cells)} cells")
         
+        # If enough cells, cluster into columns and return
         if cells and len(cells) >= 10:
             column_ranges = cluster_cells_into_columns(cells)
             return cells, column_ranges
@@ -113,30 +115,27 @@ def detect_table_cells_rtdetr(image_path: str, page_num: int) -> Tuple[List[Dict
 def detect_table_cells_opencv(image_path: str) -> Tuple[List[Dict], Dict]:
     """
     Detect table cells using OpenCV line detection.
-    More robust for structured tables with visible borders.
+    Returns a list of cell dicts and a column range dictionary.
+    Falls back to grid-based detection if not enough cells are found.
     """
     logging.info("Using OpenCV line-based cell detection...")
     
     try:
-        # Read image
+        # Read image and convert to grayscale
         img = cv2.imread(image_path)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
-        # Apply threshold
+        # Apply threshold to get binary image
         _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
         
-        # Detect horizontal lines
+        # Detect horizontal and vertical lines
         horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (40, 1))
         horizontal_lines = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, horizontal_kernel, iterations=2)
-        
-        # Detect vertical lines
         vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 40))
         vertical_lines = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, vertical_kernel, iterations=2)
         
-        # Combine lines
+        # Combine lines and find contours
         table_mask = cv2.add(horizontal_lines, vertical_lines)
-        
-        # Find contours
         contours, _ = cv2.findContours(table_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         
         cells = []
@@ -157,6 +156,7 @@ def detect_table_cells_opencv(image_path: str) -> Tuple[List[Dict], Dict]:
         
         logging.info(f"OpenCV detected {len(cells)} cells")
         
+        # If enough cells, cluster into columns and return
         if cells and len(cells) >= 10:
             column_ranges = cluster_cells_into_columns(cells)
             return cells, column_ranges
@@ -171,7 +171,7 @@ def detect_table_cells_opencv(image_path: str) -> Tuple[List[Dict], Dict]:
 def detect_table_cells_grid_based(image_path: str) -> Tuple[List[Dict], Dict]:
     """
     Fallback: Create a grid-based cell structure based on known column boundaries.
-    Uses the exact boundaries from your debug output.
+    Returns a list of cell dicts and a column range dictionary.
     """
     logging.info("Using grid-based cell detection with known boundaries...")
     
@@ -179,20 +179,13 @@ def detect_table_cells_grid_based(image_path: str) -> Tuple[List[Dict], Dict]:
     img = Image.open(image_path)
     width, height = img.size
     
-    # Define column boundaries based on page 29 debug output
-    # cluster#0: xmid=235.5 [208.0, 263.0] → Commodity Number
-    # cluster#1: xmid=535.0 [447.0, 623.0] → Commodity Description
-    # cluster#2+3: xmid~1240 [1160.0, 1330.0] → Unit of Quantity
-    # cluster#4: xmid=1441.0 [1424.0, 1458.0] → Rate of Duty 1930
-    # cluster#5: xmid=1682.5 [1661.0, 1704.0] → Rate of Duty Trade Agreement
-    # Rightmost → Tariff Paragraph
-    
+    # Define column boundaries based on debug output
     column_boundaries = [
         (208, 447),    # Commodity Number
         (447, 1160),   # Commodity Description
-        (1160, 1380),  # Unit of Quantity (merged cluster#2+3)
-        (1380, 1600),  # Rate of Duty 1930 (cluster#4 expanded)
-        (1600, 1850),  # Rate of Duty Trade Agreement (cluster#5 expanded)
+        (1160, 1380),  # Unit of Quantity
+        (1380, 1600),  # Rate of Duty 1930
+        (1600, 1850),  # Rate of Duty Trade Agreement
         (1850, 2100)   # Tariff Paragraph
     ]
     
@@ -205,6 +198,7 @@ def detect_table_cells_grid_based(image_path: str) -> Tuple[List[Dict], Dict]:
     row_y = row_start
     row_idx = 0
     
+    # Generate grid cells row by row
     while row_y < row_end:
         for col_idx, (x_min, x_max) in enumerate(column_boundaries):
             cell = {
@@ -219,7 +213,6 @@ def detect_table_cells_grid_based(image_path: str) -> Tuple[List[Dict], Dict]:
                 'col': col_idx
             }
             cells.append(cell)
-        
         row_y += row_height
         row_idx += 1
     
@@ -239,6 +232,7 @@ def detect_table_cells_grid_based(image_path: str) -> Tuple[List[Dict], Dict]:
 def cluster_cells_into_columns(cells: List[Dict]) -> Dict[int, Dict]:
     """
     Cluster cells into columns based on X coordinates.
+    Returns a dictionary of column index to column range.
     """
     if not cells:
         return {}
@@ -255,14 +249,12 @@ def cluster_cells_into_columns(cells: List[Dict]) -> Dict[int, Dict]:
     # Group into columns (gap > 80px means new column)
     columns = []
     current_col = [unique_x[0]]
-    
     for i in range(1, len(unique_x)):
         if unique_x[i] - current_col[-1] < 80:  # Same column
             current_col.append(unique_x[i])
         else:  # New column
             columns.append(current_col)
             current_col = [unique_x[i]]
-    
     columns.append(current_col)
     
     # Create column ranges with padding
@@ -286,6 +278,7 @@ def cluster_cells_into_columns(cells: List[Dict]) -> Dict[int, Dict]:
 def determine_column_type(col_idx: int, total_cols: int) -> str:
     """
     Determine the semantic type of a column based on its position.
+    Returns a string label for the column.
     """
     if total_cols >= 6:
         column_types = [
@@ -303,6 +296,7 @@ def determine_column_type(col_idx: int, total_cols: int) -> str:
 def assign_word_to_cell(word_x: float, word_y: float, cells: List[Dict]) -> Dict:
     """
     Assign a word to the most appropriate cell based on coordinates.
+    Returns the cell dict or None if not found.
     """
     # First, try exact match - word center inside cell
     for cell in cells:
@@ -313,40 +307,35 @@ def assign_word_to_cell(word_x: float, word_y: float, cells: List[Dict]) -> Dict
     # If no exact match, find nearest cell
     min_dist = float('inf')
     nearest_cell = None
-    
     for cell in cells:
         dist = np.sqrt((word_x - cell['x_center'])**2 + (word_y - cell['y_center'])**2)
         if dist < min_dist:
             min_dist = dist
             nearest_cell = cell
-    
     # Only assign if reasonably close (within 200 pixels)
     return nearest_cell if min_dist < 200 else None
 
 def assign_word_to_column(word_x: float, column_ranges: Dict[int, Dict]) -> Tuple[int, str]:
     """
     Assign a word to a column based on X coordinate.
+    Returns the column index and column type.
     """
     # First, try exact match
     for col_idx, col_range in column_ranges.items():
         if col_range['min_x'] <= word_x <= col_range['max_x']:
             col_type = determine_column_type(col_idx, len(column_ranges))
             return col_idx, col_type
-    
     # If no exact match, find nearest column
     min_dist = float('inf')
     nearest_col = None
-    
     for col_idx, col_range in column_ranges.items():
         dist = abs(word_x - col_range['center'])
         if dist < min_dist:
             min_dist = dist
             nearest_col = col_idx
-    
     if nearest_col is not None:
         col_type = determine_column_type(nearest_col, len(column_ranges))
         return nearest_col, col_type
-    
     return None, None
 
 ####
@@ -356,6 +345,7 @@ def extract_ocr_words_with_coords(pdf_path: str, start_page: int, end_page: int,
                                    ocr: PaddleOCR, output_csv: str = output_word_coords) -> None:
     """
     Extract words and their coordinates from PDF using OCR with enhanced cell detection.
+    Saves results to CSV and logs statistics.
     """
     logging.info(f"Extracting words with coordinates from PDF pages {start_page}-{end_page}...")
     
@@ -470,7 +460,7 @@ def extract_ocr_words_with_coords(pdf_path: str, start_page: int, end_page: int,
 
     doc.close()
 
-    # Create DataFrame
+    # Create DataFrame and save to CSV
     headers = [
         "Word", "Confidence",
         "TopLeft_X", "TopLeft_Y",
@@ -487,7 +477,7 @@ def extract_ocr_words_with_coords(pdf_path: str, start_page: int, end_page: int,
     df.to_csv(output_csv, index=False)
     logging.info(f"\n✅ Word-coordinate CSV with cell info saved to: {output_csv}")
     
-    # Log statistics
+    # Log statistics and sample output
     logging.info(f"\n{'='*60}")
     logging.info(f"EXTRACTION STATISTICS")
     logging.info(f"{'='*60}")
@@ -511,6 +501,9 @@ def extract_ocr_words_with_coords(pdf_path: str, start_page: int, end_page: int,
         logging.info(f"  {col_type}: {', '.join(sample_words)}")
 
 def main():
+    """
+    Main function to initialize OCR and run extraction.
+    """
     ocr = PaddleOCR(
         text_detection_model_name="PP-OCRv5_mobile_det",
         text_recognition_model_name="PP-OCRv5_mobile_rec",
