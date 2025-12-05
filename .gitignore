@@ -1,1 +1,13 @@
 .DS_Store
+virtual
+1933 Schedule A.pdf
+1950 Schedule A (scanned by ILL, Reed College).pdf
+venv
+old-work
+new-work/other
+new-work/output
+temp_images
+temp
+table.py
+new-work/output/table_cells_page_29.json
+new-work/output/ocr_word_coords.csv
