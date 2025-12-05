@@ -1,12 +1,15 @@
 import pandas as pd
 import re
-from typing import List
+from typing import List, Dict, Any
+
 
 # =======================================
 # CONFIGURATION
 # =======================================
-INPUT_CSV = r"new-work/output/cleaned_classified_words.csv"
-OUTPUT_CSV = r"new-work/output/final_table.csv"
+
+INPUT_CSV = r"new-work/output/page_29/cleaned_classified_words.csv"
+OUTPUT_CSV = r"new-work/output/cleaned_flattened_table.csv"
+
 
 # =======================================
 # COLUMN DEFINITIONS
@@ -20,8 +23,6 @@ cols = [
     "Tariff Paragraph",
 ]
 
-# =======================================
-# HEADER SPLITTING HELPERS
 # =======================================
 HEADER_SUB_RE = re.compile(r'''
     (?P<header>

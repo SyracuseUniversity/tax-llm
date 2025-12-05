@@ -1,0 +1,19 @@
+# PaddlePaddle CPU version 3.0.0
+paddlepaddle==3.0.0
+
+# PaddleOCR for OCR and table cell detection
+paddleocr
+
+# PDF processing
+pymupdf
+
+# Image handling
+Pillow
+
+# Data handling
+numpy
+pandas
+opencv-python
+
+# Testing (if you plan to use pytest)
+pytest

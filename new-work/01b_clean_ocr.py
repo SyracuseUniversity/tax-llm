@@ -47,15 +47,24 @@ def load_and_preprocess(input_csv: str) -> pd.DataFrame:
 # 2️⃣ Analyze coordinate zones
 # ----------------------------------------------------------------------------
 def analyze_and_refine_zones(df):
-    zones = {
-        'commodity': {'min_x': 220, 'max_x': 320},
-        'description': {'min_x': 450, 'max_x': 1250},
-        'unit': {'min_x': 1300, 'max_x': 1320},
-        'rate_1930': {'min_x': 1450, 'max_x': 1690},
-        'rate_trade': {'min_x': 1691, 'max_x': 1730},
-        'tariff': {'min_x': 2140, 'max_x': 2190}
+
+    zones_28 = {
+        # 'commodity': {'min_x': 220, 'max_x': 320},
+        # 'description': {'min_x': 450, 'max_x': 1250},
+        # 'unit': {'min_x': 1300, 'max_x': 1320},
+        # 'rate_1930': {'min_x': 1450, 'max_x': 1690},
+        # 'rate_trade': {'min_x': 1691, 'max_x': 1730},
+        # 'tariff': {'min_x': 2140, 'max_x': 2190}
+    },
+    zones_29 = {
+        'commodity': {'min_x': 208, 'max_x': 213},
+        'description': {'min_x': 448, 'max_x': 1205},
+        'unit': {'min_x': 1273, 'max_x': 1282},
+        'rate_1930': {'min_x': 1423, 'max_x': 1607},
+        'rate_trade': {'min_x': 1661, 'max_x': 1763},
+        'tariff': {'min_x': 2125, 'max_x': 2151}
     }
-    return zones
+    return zones_29, zones_28
 
 # ----------------------------------------------------------------------------
 # 3️⃣ Classification function
