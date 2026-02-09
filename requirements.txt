@@ -5,7 +5,7 @@ paddlepaddle==3.0.0
 paddleocr
 
 # PDF processing
-pymupdf
+PyMuPDF
 
 # Image handling
 Pillow

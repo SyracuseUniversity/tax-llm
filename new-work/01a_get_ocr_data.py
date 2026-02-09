@@ -11,13 +11,17 @@ import numpy as np
 import re
 import logging
 from typing import List
+from pathlib import Path
 
 ###############################################
 # Configuration
 ###############################################
-pdf_path = r'1950 Schedule A (scanned by ILL, Reed College).pdf'
-output_word_coords = r'new-work/output/ocr_word_coords.csv'
-output_cleaned_csv = r'new-work/output/cleaned_classified_words.csv'
+
+BASE_DIR = Path(__file__).parent  # folder containing your script
+
+pdf_path = BASE_DIR.parent / '1950 Schedule A (scanned by ILL, Reed College)-2-AdobeOCR.pdf'
+output_word_coords = BASE_DIR / 'output/ocr_word_coords.csv'
+output_cleaned_csv = BASE_DIR / 'output/cleaned_classified_words.csv'
 start_page = 28
 end_page = 28  # Pages with the table
 
@@ -52,7 +56,7 @@ def extract_ocr_words_with_coords(pdf_path: str, start_page: int, end_page: int,
         pix = page.get_pixmap(dpi=300)
         image = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
         image_np = np.array(image)
-        image.show() #check image
+        # image.show() #check image
 
         # Updated: Use structure like rec_texts, rec_polys, rec_scores
         results = ocr.predict(image_np)[0]  # Assuming single image result
