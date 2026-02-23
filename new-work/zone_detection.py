@@ -13,17 +13,20 @@ import numpy as np
 import logging
 from typing import List, Dict, Tuple
 import cv2
+from pathlib import Path
 
 ####
 # Configuration
 ####
-pdf_path = r'1950 Schedule A (scanned by ILL, Reed College).pdf'
-output_word_coords = r'new-work/output/ocr_word_coords.csv'
-output_cells_json = r'new-work/output/table_cells_page_{page}.json'
-output_cells_image = r'new-work/output/cells_visualization_page_{page}.png'
-temp_image_dir = r'new-work/temp'
-start_page = 29
-end_page = 29
+BASE_DIR = Path(__file__).parent  # folder containing your script
+
+pdf_path = BASE_DIR.parent / '1950 Schedule A (scanned by ILL, Reed College)-2-AdobeOCR.pdf'
+output_word_coords = BASE_DIR / 'new-work/output/ocr_word_coords.csv'
+output_cells_json = BASE_DIR / 'new-work/output/table_cells_page_{page}.json'
+output_cells_image = BASE_DIR / 'new-work/output/cells_visualization_page_{page}.png'
+temp_image_dir = BASE_DIR / 'new-work/temp'
+start_page = 28
+end_page = 28
 
 ####
 # Logging Setup
@@ -52,10 +55,10 @@ def detect_table_cells_rtdetr(image_path: str, page_num: int) -> Tuple[List[Dict
         
         for res in output:
             # Save JSON output and visualization
-            json_path = output_cells_json.format(page=page_num)
+            json_path = str(output_cells_json).format(page=page_num)
             os.makedirs(os.path.dirname(json_path), exist_ok=True)
             res.save_to_json(json_path)
-            img_out_path = output_cells_image.format(page=page_num)
+            img_out_path = str(output_cells_image).format(page=page_num)
             res.save_to_img(os.path.dirname(img_out_path))
             logging.info(f"Saved cell visualization to: {img_out_path}")
             
@@ -77,14 +80,34 @@ def detect_table_cells_rtdetr(image_path: str, page_num: int) -> Tuple[List[Dict
                 scores = detection_data.get('scores', [1.0] * len(boxes))
             elif isinstance(detection_data, list):
                 for item in detection_data:
-                    if 'bbox' in item:
-                        boxes.append(item['bbox'])
+                    if 'coordinate' in item:
+                        boxes.append(item['coordinate'])
                         scores.append(item.get('score', 1.0))
+
             
             # Process each detected cell
             for i, box in enumerate(boxes):
-                if len(box) >= 4:
-                    x1, y1, x2, y2 = box[:4]
+
+                # Case 1: box is a dict like {"bbox": [...], "score": ...}
+                if isinstance(box, dict):
+                    if "bbox" not in box:
+                        logging.warning(f"Skipping malformed detection: {box}")
+                        continue
+                    coords = box["bbox"]
+                    score = box.get("score", 1.0)
+
+                # Case 2: box is already a list/tuple [x1,y1,x2,y2]
+                elif isinstance(box, (list, tuple)) and len(box) >= 4:
+                    coords = box[:4]
+                    score = scores[i] if i < len(scores) else 1.0
+
+                else:
+                    logging.warning(f"Unknown box format: {box}")
+                    continue
+
+                try:
+                    x1, y1, x2, y2 = map(float, coords)
+
                     cell = {
                         'x': int(x1),
                         'y': int(y1),
@@ -92,9 +115,14 @@ def detect_table_cells_rtdetr(image_path: str, page_num: int) -> Tuple[List[Dict
                         'h': int(y2 - y1),
                         'x_center': (x1 + x2) / 2,
                         'y_center': (y1 + y2) / 2,
-                        'confidence': float(scores[i]) if i < len(scores) else 1.0
+                        'confidence': float(score)
                     }
+
                     cells.append(cell)
+
+                except Exception as e:
+                    logging.warning(f"Invalid bbox values {coords}: {e}")
+                    continue
         
         logging.info(f"✅ RT-DETR-L detected {len(cells)} cells")
         
@@ -408,7 +436,7 @@ def extract_ocr_words_with_coords(pdf_path: str, start_page: int, end_page: int,
             } for k, v in column_ranges.items()}
         }
         
-        cells_json_path = output_cells_json.format(page=page_number + 1)
+        cells_json_path = BASE_DIR / f'new-work/output/table_cells_page_{page_number + 1}.json'
         os.makedirs(os.path.dirname(cells_json_path), exist_ok=True)
         with open(cells_json_path, 'w') as f:
             json.dump(cells_output, f, indent=2)

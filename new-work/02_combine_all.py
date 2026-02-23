@@ -1,6 +1,5 @@
 import pandas as pd
 import re
-import os
 from typing import List, Dict, Any
 from pathlib import Path
 
@@ -9,8 +8,8 @@ from pathlib import Path
 # =======================================
 BASE_DIR = Path(__file__).parent  # folder containing your script
 
-INPUT_CSV = BASE_DIR / "new-work/output/cleaned_classified_words.csv"
-OUTPUT_CSV = BASE_DIR / "new-work/output/cleaned_flattened_table.csv"
+INPUT_CSV = BASE_DIR / "output/cleaned_classified_words.csv"
+OUTPUT_CSV = BASE_DIR / "output/cleaned_flattened_table.csv"
 
 # =======================================
 # COLUMN DEFINITIONS
